@@ -44,7 +44,7 @@ const ImageUploader = (props) => {
         },
       });
       if (res.data.success) {
-        props.navigation.dispatch(StackActions.replace('UserProfile'));
+        props.navigation.dispatch(StackActions.replace('AppForm'));
       }
     } catch (error) {
       console.log(error.message);

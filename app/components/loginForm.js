@@ -6,9 +6,11 @@ import FormInput from './FormInput';
 import FormSubmit from './FormSubBtn';
 import { isValidEmail, isValidObjField, updateError } from '../utils/methods';
 import client from '../api/client';
+import { useLogin } from '../context/LoginProvider';
 
 // create a component
 const LoginForm = () => {
+  const { setIsLoggedIn, setProfile } = useLogin();
   const [userInfo, setUserInfo] = useState({
     email: '',
     password: '',
@@ -33,6 +35,8 @@ const LoginForm = () => {
         const res = await client.post('/sign-in', { ...userInfo });
         if (res.data.success) {
           setUserInfo({ email: '', password: '' });
+          setProfile(res.data.user);
+          setIsLoggedIn(true);
         }
         console.log(res.data);
       } catch (error) {
@@ -53,6 +57,7 @@ const LoginForm = () => {
         label="Email"
         onChangeText={(value) => handleOnChangeText(value, 'email')}
         placeholder="Enter your Email"
+        autoCapitalize="none"
       />
       <FormInput
         secureTextEntry
