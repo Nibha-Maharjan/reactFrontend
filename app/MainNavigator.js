@@ -3,8 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import AppForm from './components/AppForm';
 import ImageUpload from './components/imageUpload';
-import UserProfile from './components/UserProfile';
-import PatientForm from './components/patientForm';
 import DrawerNavigator from './DrawerNavigator';
 import { useLogin } from './context/LoginProvider';
 

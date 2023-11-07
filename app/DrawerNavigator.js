@@ -6,12 +6,16 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import Home from './components/Home';
-import Tasks from './components/Tasks';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from './components/Pages/Home';
+import Tasks from './components/Pages/Tasks';
 import { useLogin } from './context/LoginProvider';
-import UserProfile from './components/UserProfile';
+import AddPatient from './components/Pages/UserProfile';
+import PatientList from './components/Pages/patientForm';
+import PatientDetails from './components/Pages/PatientDetailScreen';
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const CustomDrawer = (props) => {
   const { setIsLoggedIn, profile } = useLogin();
@@ -76,8 +80,21 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen component={Home} name="Home" />
       <Drawer.Screen component={Tasks} name="Tasks" />
-      <Drawer.Screen component={UserProfile} name="User Profile" />
+      <Drawer.Screen component={PatientStackScreen} name="PatientStack" />
+      <Drawer.Screen component={AddPatient} name="Patient List" />
     </Drawer.Navigator>
+  );
+};
+const PatientStackScreen = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTitle: null,
+      }}
+    >
+      <Stack.Screen name="PatientList" component={PatientList} />
+      <Stack.Screen name="PatientDetails" component={PatientDetails} />
+    </Stack.Navigator>
   );
 };
 
