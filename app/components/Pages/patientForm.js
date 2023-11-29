@@ -1,8 +1,9 @@
-import { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   FlatList,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -10,23 +11,41 @@ import axios from 'axios';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 export default function PatientList(props) {
-  //Navigation to send data
+  // Navigation to send data
   const navigation = useNavigation();
-  //Set Patients
-  const [patient, setPatients] = useState([]);
-  //Fetch data from Backend
+  // Set Patients
+  const [patients, setPatients] = useState([]);
+  // Filtered Patients
+  const [filteredPatients, setFilteredPatients] = useState([]);
+  // Search query state
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Fetch data from Backend
   const fetchPatients = () => {
     axios
       .get('http://localhost:3000/patient/')
-      .then((response) => setPatients(response.data))
+      .then((response) => {
+        setPatients(response.data);
+        setFilteredPatients(response.data);
+      })
       .catch((error) => console.log(error));
   };
-  //Update Page after adding newpatient
+
+  // Update Page after adding new patient
   useFocusEffect(
     useCallback(() => {
       fetchPatients();
     }, [])
   );
+
+  // Handle search input change
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+    const filtered = patients.filter((patient) =>
+      patient.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredPatients(filtered);
+  };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -36,11 +55,18 @@ export default function PatientList(props) {
       <Text style={styles.patientName}>{item.name}</Text>
     </TouchableOpacity>
   );
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Patient Table</Text>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search by name"
+        value={searchQuery}
+        onChangeText={handleSearch}
+      />
       <FlatList
-        data={patient}
+        data={filteredPatients}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
         style={styles.flatList}
@@ -82,5 +108,26 @@ const styles = StyleSheet.create({
   },
   flatList: {
     flex: 1,
+  },
+  searchInput: {
+    backgroundColor: '#ffffff',
+    padding: 10,
+    margin: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  filteredResultsContainer: {
+    backgroundColor: '#f9f9f9',
+    padding: 10,
+    margin: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  filteredResultsText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
 });
