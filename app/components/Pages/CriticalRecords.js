@@ -10,36 +10,36 @@ import {
 const CriticalRecord = ({ route }) => {
   const { records } = route.params.patient;
 
-  const criticalRecords = records.filter((record) => {
-    const { vitalSigns } = record;
-    return (
-      vitalSigns.bloodPressure &&
-      (vitalSigns.bloodPressure.includes('/') ||
-        vitalSigns.bloodPressure === 'High') &&
-      vitalSigns.respiratoryRate &&
-      (vitalSigns.respiratoryRate < 12 || vitalSigns.respiratoryRate > 25) &&
-      vitalSigns.bloodOxygenLevel &&
-      vitalSigns.bloodOxygenLevel < 90 &&
-      vitalSigns.heartBeatRate &&
-      (vitalSigns.heartBeatRate < 60 || vitalSigns.heartBeatRate > 100)
-    );
-  });
+  const isCritical = (label, value) => {
+    switch (label) {
+      case 'Blood Pressure':
+        return value.includes('/') || value === 'High';
+      case 'Respiratory Rate':
+        return value < 12 || value > 25;
+      case 'Blood Oxygen Level':
+        return value < 90;
+      case 'Heart Beat Rate':
+        return value < 60 || value > 100;
+      default:
+        return false;
+    }
+  };
+
+  const renderItemText = (label, value) => (
+    <Text
+      style={[styles.text, isCritical(label, value) && styles.criticalText]}
+    >
+      {label}: {value}
+    </Text>
+  );
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.item}>
-      <Text style={styles.text}>Date: {item.dateTime}</Text>
-      <Text style={styles.text}>
-        Blood Pressure: {item.vitalSigns.bloodPressure}
-      </Text>
-      <Text style={styles.text}>
-        Respiratory Rate: {item.vitalSigns.respiratoryRate}
-      </Text>
-      <Text style={styles.text}>
-        Blood Oxygen Level: {item.vitalSigns.bloodOxygenLevel}
-      </Text>
-      <Text style={styles.text}>
-        Heart Beat Rate: {item.vitalSigns.heartBeatRate}
-      </Text>
+      {renderItemText('Date', item.dateTime)}
+      {renderItemText('Blood Pressure', item.vitalSigns.bloodPressure)}
+      {renderItemText('Respiratory Rate', item.vitalSigns.respiratoryRate)}
+      {renderItemText('Blood Oxygen Level', item.vitalSigns.bloodOxygenLevel)}
+      {renderItemText('Heart Beat Rate', item.vitalSigns.heartBeatRate)}
     </TouchableOpacity>
   );
 
@@ -47,7 +47,7 @@ const CriticalRecord = ({ route }) => {
     <View style={styles.container}>
       <Text style={styles.header}>Critical Patient Records</Text>
       <FlatList
-        data={criticalRecords}
+        data={records}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -73,6 +73,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
+  },
+  criticalText: {
+    color: 'red',
   },
 });
 
