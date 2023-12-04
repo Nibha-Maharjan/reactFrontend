@@ -11,16 +11,16 @@ import axios from 'axios';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 export default function PatientList(props) {
-  // Navigation to send data
+  // navigation to send data
   const navigation = useNavigation();
-  // Set Patients
+  // set Patients
   const [patients, setPatients] = useState([]);
-  // Filtered Patients
+  // filtered Patients
   const [filteredPatients, setFilteredPatients] = useState([]);
-  // Search query state
+  // search query state
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch data from Backend
+  // fetch data
   const fetchPatients = () => {
     axios
       .get('http://localhost:3000/patient/')
@@ -31,14 +31,14 @@ export default function PatientList(props) {
       .catch((error) => console.log(error));
   };
 
-  // Update Page after adding new patient
+  // refresh page
   useFocusEffect(
     useCallback(() => {
       fetchPatients();
     }, [])
   );
 
-  // Handle search input change
+  // handle search input change
   const handleSearch = (text) => {
     setSearchQuery(text);
     const filtered = patients.filter((patient) =>

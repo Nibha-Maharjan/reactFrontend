@@ -10,7 +10,7 @@ import axios from 'axios';
 
 const PatientRecord = ({ navigation }) => {
   const [patients, setPatients] = useState([]);
-
+  //connect db
   useEffect(() => {
     axios
       .get('http://localhost:3000/patient/')

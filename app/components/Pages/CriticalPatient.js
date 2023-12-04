@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 const CriticalPatient = () => {
   const [criticalPatients, setCriticalPatients] = useState([]);
   const navigation = useNavigation();
-
+  //get data of criritcal patient
   useEffect(() => {
     axios
       .get('http://localhost:3000/patient/critical-patients')

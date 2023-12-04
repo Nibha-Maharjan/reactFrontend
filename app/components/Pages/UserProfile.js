@@ -18,12 +18,12 @@ const AddPatient = ({ navigation }) => {
       .post('http://localhost:3000/patient/', formData)
       .then((response) => {
         console.log('Patient data saved successfully:', response.data);
-        // Optionally, show a success message or navigate to another screen upon successful data submission
+        // success
         Alert.alert('Success', 'Patient data saved successfully');
       })
       .catch((error) => {
         console.error('Error saving patient data:', error);
-        // Optionally, show an error message to the user
+        // error
         Alert.alert('Error', 'Failed to save patient data. Please try again.');
       });
   };
@@ -87,6 +87,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    paddingBottom: 90,
+    paddingTop: 30,
   },
   header: {
     fontSize: 28,

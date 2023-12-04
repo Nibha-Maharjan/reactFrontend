@@ -15,7 +15,7 @@ const AddRecord = () => {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState('');
   const [recordData, setRecordData] = useState({
-    // Initialize record data fields
+    //init data fields
     dateTime: '',
     vitalSigns: {
       bloodPressure: '',
@@ -26,9 +26,9 @@ const AddRecord = () => {
   });
 
   useEffect(() => {
-    // Fetch list of patients from the server when component mounts
+    // Fetch list of patients
     axios
-      .get('http://localhost:3000/patient') // Replace with your API endpoint for fetching patients
+      .get('http://localhost:3000/patient')
       .then((response) => {
         setPatients(response.data);
       })
@@ -38,20 +38,18 @@ const AddRecord = () => {
   }, []);
 
   const handleSaveRecord = () => {
-    // Send the recordData to your server to add a record for the selected patient
-    // Make an API call to your endpoint to add the record
-    // Use recordData and selectedPatient to send the record details to the server
+    // Send the recordData to your server
     axios
       .post(
         'http://localhost:3000/patient/' + selectedPatient + '/records',
         recordData
       )
       .then((response) => {
-        // Handle success if needed
+        // success
         console.log('Record added successfully:', response.data);
       })
       .catch((error) => {
-        // Handle error if needed
+        // error
         console.error('Error adding record:', error);
       });
   };

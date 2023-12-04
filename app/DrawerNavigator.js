@@ -84,7 +84,7 @@ const DrawerNavigator = () => {
       drawerContent={(props) => <CustomDrawer {...props} />}
     >
       <Drawer.Screen component={Home} name="Home" />
-      <Drawer.Screen component={Tasks} name="Tasks" />
+      {/* <Drawer.Screen component={Tasks} name="Tasks" /> */}
       <Drawer.Screen component={PatientStackScreen} name="Patient List" />
       <Drawer.Screen component={AddPatient} name="Add Patient" />
       <Drawer.Screen component={RecordStackScreen} name="Patient Records" />
